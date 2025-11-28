@@ -1,0 +1,82 @@
+----------------------- TO DO -----------------------
+
+Calculate fish value based on weight
+Fatten up fish to increase weight/value
+Track inventory fish value over time
+show fish price range
+show fish weight range
+
+Open graph to show more mutations/days
+Show market and inventory as tanks with fish
+Add fish def rarity (how frequent spawn in market?)
+Animated fish tank
+
+Add Calendar modal
+    show when rent is due.
+Add Upgrades modal
+    Allow player to buy upgrades
+Add Instructions modal
+
+Add more unique params to fish instances
+    pos, vel, acc
+    size, color, animation_state
+    stock volitility, min/max-price
+Let player take care of fish health and weight
+Buying and selling animation (from and to tank).
+      
+
+
+----------------------- TO DO 2 -------------------------
+
+animate change money  
+graph
+    draw grid x-axis grid lines
+    draw grid labels 
+        X-day   (1,2,3)
+        Y-money (50, 100, 150)
+messages log like RCT2
+    this won't replace messages (pop ups)
+    this will instead keep a chat window open where messages (and logs) are displayed
+    3 sizes (minimized, open, full screen)
+
+
+----------------------- GAME LOOP -----------------------
+Main-loop
+    buy low, sell high
+    buy upgrades
+    pay rent
+    rent increases
+
+Mini Games
+    market/trade
+    tank/feed_fish
+    tank/upgrade_tank
+    dive/collect_fish
+    dive/meet_fish
+    tank/teach_capitalism
+
+
+----------------------- UPGRADES -----------------------
+
+Buy bigger fish tank => Add inventory slot
+Buy boat => Increase market spawns (higher weight, more options, more fish)
+Buy diving gear => get free fish
+Meet fish => New fish appear in market
+House colony of fish from sea => Reduce inventory capacity
+Convince sea-fish to hunt other fish for you in exchange of goods => Get fish (almost) for free
+Feed fish => increase tank fish weight == value
+Move to bigger place => increase rent
+
+See the future: Show next day price mutation velocity for fish type
+
+
+
+----------------------- OTHER --------------------------
+
+Ideas
+    You can only sell certain fish on certain days.
+    
+
+    
+
+

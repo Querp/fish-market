@@ -1,0 +1,16 @@
+@media (width > 1500px) {
+    :root {
+        /* --dashboard-template-columns: 1fr 150px auto 150px 1fr; */
+    }
+}
+
+@media (width > 1300px) {
+
+
+
+
+    .body {
+        padding: 0 calc(6vw - 5rem) 40px;
+    }
+
+}

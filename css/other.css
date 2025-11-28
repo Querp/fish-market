@@ -1,0 +1,95 @@
+/* Cursor */
+/* html {
+    cursor: url('../img/cursor.png'), auto;
+    .row:has([data-type="Bluefin"]):hover{
+        cursor: url('../img/cursor-bluefin.png'), auto;
+    }
+    .row:has([data-type="Abelone"]):hover{
+        cursor: url('../img/cursor-abelone.png'), auto;
+    }
+}
+
+input:hover,
+.next-day:hover {
+    cursor: inherit;
+} */
+
+
+.empty {
+    padding: 1rem;
+    font-size: 1.25rem;
+}
+
+
+.material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 96px;
+    vertical-align: middle;
+    /* color: rgb(255, 0, 221); */
+    user-select: none;
+
+    font-variation-settings:
+        'FILL' 0,
+        /* 0 = outline, 1 = filled */
+        'wght' 100,
+        /* 100–700 */
+        'GRAD' 0,
+        'opsz' 24;
+    /* 20, 24, 40, 48 */
+}
+
+.pos,
+.neg {
+    position: relative;
+    overflow: visible;
+
+    &::after {
+        font-size: 0.75em;
+        position: absolute;
+        margin-left: 0.35rem;
+        display: inline-block;
+
+        /* inset: 4.5% 0 0 66px; */
+    }
+}
+
+
+.pos {
+    &::after {
+        content: '⮝';   
+        color: lime;
+    }
+
+    &.double::after {
+        content: '⮝⮝';
+    }
+}
+
+.neg {
+    &::after {
+        content: '⮟';
+        color: red;
+    }
+
+    &.double::after {
+        content: '⮟⮟';
+    }
+}
+
+.stats .stat-price {
+    position: relative;
+    /* display: grid; */
+    /* grid-template-columns: auto 1fr; */
+
+    &::before {
+        content: '$';
+        /* font-size: 1rem; */
+        /* color: #aaa; */
+        filter: drop-shadow(1px 1px 4px #151515) grayscale(0.4);
+        /* display: inline-block; */
+        /* align-content: center; */
+        /* align-self: center; */
+    }
+}
