@@ -1,5 +1,22 @@
 ----------------------- TO DO -----------------------
 
+Populate graph (mutation history)
+
+Add fish def commonality
+    snapper     100
+    sunfish     90
+    bluefin     70
+    abelone     45
+    blowfish    35
+    starfish    10
+
+Weight
+    fish spawn in market at same weight for type
+    user can feed fish to increase sell price
+Fish price formula:
+basePrice + price per kg 
+
+
 Calculate fish value based on weight
 Fatten up fish to increase weight/value
 Track inventory fish value over time
@@ -76,7 +93,36 @@ See the future: Show next day price mutation velocity for fish type
 Ideas
     You can only sell certain fish on certain days.
     
+Missing
+    min - max weight of fish 
+    min - max price of fish (stat tile bg not sufficient)
+        both also missing on graph
+
 
     
 
 
+
+----------------------- LAYOUT --------------------------
+
+side    main-nav    main-nav    main-nav   
+side    dashboard   dashboard   dashboard       
+side    game-nav    game-nav    game-nav
+side    -tab-       -tab-       -tab-
+side    -tab-       -tab-       -tab-
+
+
+
+game-nav.home.show
+        market      stats       inventory
+        market      graph       inventory                
+
+
+game-nav.graph.show
+        graph       graph       graph
+        graph       graph       graph 
+
+
+game-nav.tank.show
+        tank        tank        tank
+        tank        tank        tank 

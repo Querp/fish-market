@@ -18,6 +18,13 @@ export class Game {
         this.mutations = [[]];      // no mutations on day 1;
         this.priceHistory = [getCurrentPrices()];
         this.dailyPrice = 0;
+        this.initStockPrices(100);
+    }
+
+    static initStockPrices(amount) {
+        for (let i = 0; i < amount; i++) {
+            this.mutateStockPrices();
+        }
     }
 
     static updateBalance(mutation) {

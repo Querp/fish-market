@@ -15,11 +15,9 @@ export class Document {
         messagesLog: document.getElementById('messages-log'),
         graphE: document.getElementById('graph'),
     }
-    static fish;
     static messages = [];
 
     static init() {
-        this.fish = Fish;
         this.initHandlers();
     }
 
@@ -272,17 +270,3 @@ export class Document {
         tableE.innerHTML = rows;
     }
 }
-
-
-// <div class="row">
-//     <div data-type="${fish.type}">${fish.type}</div>
-//     <img src="${fish.imgSrc}" ></img>
-//     <div>${fish.priceMin}</div>
-//     <div ${statPriceClass}>${fish.price.toFixed(2)}</div>
-//     <div>${fish.priceMax}</div>
-//     <div>${(fish.priceVectorMax)}</div>
-//     <div>${fish.priceVolitility.toFixed(2)}</div>
-//     <div>${(fish.priceVolitility * fish.priceVectorMax).toFixed(2)}</div>
-//     <div ${clas} >${(Math.abs(fish.priceVector)).toFixed(2)}</div>
-//     <div ${clas} >${Math.abs(mutation.toFixed(2))}</div>
-// </div>
