@@ -1,10 +1,12 @@
 import { Document } from './document.js';
 import { Fish } from './fish.js';
+import { Tank } from './tank.js';
 
 export class Game {
     static dayCount = 0;
     static balance = 100;
     static inventory = [];
+    static food = 0;
     static market = [];
     static mutations = [[]];
     static priceHistory = [];
@@ -12,8 +14,9 @@ export class Game {
 
     static init() {
         this.dayCount = 0;
-        this.balance = 100;
+        this.balance = 50;
         this.inventory = [];
+        this.food = 0;
         this.market = [];
         this.mutations = [[]];      // no mutations on day 1;
         this.priceHistory = [getCurrentPrices()];
@@ -58,21 +61,23 @@ export class Game {
             console.log(this.market);
         }
         Document.updateMarket();
+
+        Tank.addFish(fish)
     }
 
     static sell(e) {
-        const type = e.target.dataset.type;
         const id = parseInt(e.target.dataset.id);
         const fish = this.inventory.find(f => f.id === id);
 
-        const msg = `Selling ${type} "${fish.name}" ${fish.img} at $${fish.price.toFixed(2)}`;
-
+        Tank.removeFish(fish);
         Game.updateBalance(fish.price * -1);
-        Document.message(msg, "info");
 
-        const index = this.inventory.findIndex(f => f.type === type);
-        this.inventory.splice(index, 1);
+        const index = this.inventory.findIndex(f => f.id === fish.id);
+        if (index !== -1) this.inventory.splice(index, 1);
         Document.updateInventory();
+
+        const msg = `Selling ${fish.type} "${fish.name}" ${fish.img} at $${fish.price.toFixed(2)}`;
+        Document.message(msg, "info");
     }
 
     static log() {
@@ -88,6 +93,7 @@ export class Game {
         this.dayCount += 1;
         this.updateNextDayPrice();
         this.mutateStockPrices();
+        this.resetInventoryEatenToday();
     }
 
     static mutateStockPrices() {
@@ -132,7 +138,7 @@ export class Game {
         for (let i = 0; i < this.inventory.length; i++) {
             const fish = this.inventory[i];
             const mutation = mutations[fish.type];
-            fish.price += mutation
+            fish.price += mutation;
         }
     }
 
@@ -165,6 +171,33 @@ export class Game {
         const increment = 0.25
 
         return basePrice + Math.floor((this.dayCount + 1) / interval) * increment;
+    }
+
+    static feedFish(e) {
+        const id = parseInt(e.target.dataset.id);
+        const fish = this.inventory.find(f => f.id === id);
+        if (fish.eatenToday) {
+            Document.message(`"${fish.name}" is full!`, 'warning')
+            return
+        }
+
+        const extraWeight = 1;
+        const extraValue = extraWeight * fish.gramPrice;
+
+        fish.foodEaten += extraWeight;
+        fish.weight += extraWeight;
+        fish.price = +fish.price + extraValue;
+        fish.eatenToday = true;
+
+        Document.message(`Feeding "${fish.name}" 1 gram of food. \nPrice + $${fish.gramPrice.toFixed(2)}.`);
+        Document.updateInventory();
+        Document.updatePlayerValue();
+    }
+
+    static resetInventoryEatenToday() {
+        for (let f of this.inventory) {
+            f.eatenToday = false;
+        }
     }
 }
 

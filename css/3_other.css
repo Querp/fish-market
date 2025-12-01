@@ -16,8 +16,9 @@ input:hover,
 
 
 .empty {
-    padding: 1rem;
-    font-size: 1.25rem;
+    /* padding: 1rem; */
+    /* font-size: 1.25rem; */
+    color: #777;
 }
 
 
@@ -40,43 +41,44 @@ input:hover,
     /* 20, 24, 40, 48 */
 }
 
-.pos,
-.neg {
+/* .row:has(.pos),
+.row:has(.neg){
     position: relative;
     overflow: visible;
 
-    &::after {
-        font-size: 0.75em;
+    &::before {
+        font-size: 1em;
         position: absolute;
-        margin-left: 0.35rem;
-        display: inline-block;
+        z-index: 4;
 
-        /* inset: 4.5% 0 0 66px; */
+        inset: auto auto 1.4rem 1rem;
     }
 }
 
-
-.pos {
-    &::after {
+.row:has(.pos) {
+    &::before {
         content: '⮝';   
-        color: lime;
+        color: rgba(0, 255, 0, 0.471);
     }
-
-    &.double::after {
+    
+    &.double::before {
         content: '⮝⮝';
     }
+
 }
 
-.neg {
-    &::after {
+.row:has(.neg) {
+    &::before {
         content: '⮟';
-        color: red;
+        color: rgba(255, 0, 0, 0.391);
     }
-
-    &.double::after {
+    
+    &.double::before {
         content: '⮟⮟';
     }
-}
+} */
+
+
 
 .stats .stat-price {
     position: relative;
@@ -92,4 +94,82 @@ input:hover,
         /* align-content: center; */
         /* align-self: center; */
     }
+}
+
+.tank {
+    overflow: visible !important;
+    
+    h2 {}
+    
+    .fishes {
+        position: relative;
+        box-shadow: inset 2px 70px 150px 0px rgba(0, 166, 255, 0.225);
+        overflow: visible;
+        margin: 0 20px 20px;
+        /* max-height: 200px; */
+        /* aspect-ratio: 2/1; */
+        /* margin-inline: auto; */
+
+
+        .fish {
+            --x: 50%;
+            --y: 0%;
+            width: 7%;
+            aspect-ratio: 1;
+            position: absolute;
+            inset: var(--y) auto auto var(--x);
+            transform: translate(-50%, -50%);
+            /* border-radius: 999rem; */
+            /* box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.572); */
+            transition: inset 0.3s linear, transform 0.3s ease, width 0.3s ease, height 0.3s ease, box-shadow 0.2s ease;
+            /* background: red; */
+            
+            .title {
+                /* background: lime; */
+                position: absolute;
+                inset: auto auto -13px auto;
+                /* font-size: 2rem; */
+            }
+            
+            img {
+                --rotate-y: 0%;
+                width: 100%;
+                height: 100%;
+                display: block;
+                margin-inline: auto;
+                /* transition: filter 0.15s ease; */
+                
+                
+                transform: rotateY(var(--rotate-y));
+            }
+
+            &:hover {
+                cursor: pointer;
+                /* color: red; */
+                /* font-size: 2rem; */
+                /* transform: scale(1.7); */
+                width: 13%;
+                box-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.579);
+                transition: inset 0.3s linear, transform 0.12s ease, width 0.12s ease, height 0.12s ease, box-shadow 0.2s ease;
+                color: red;
+                z-index: 1;
+
+                img {
+                    filter: drop-shadow(0 0 3px white);
+                }
+            }
+
+            &:active {
+                
+                width: 15%;
+                height: 13%;
+            }
+        }
+    }
+
+
+}
+
+.tank .fish[data-type="Abelone"] {
+    /* background: red !important; */
 }

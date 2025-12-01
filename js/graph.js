@@ -7,7 +7,7 @@ export class Graph {
     static fishToDraw = {};
 
     static draw() {
-        const cols = 100;    // days
+        const cols = 55;    // days
         const rows = 77;   // price
         const border = 10;
         const history = getFishHistories(cols);

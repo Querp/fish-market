@@ -1,9 +1,10 @@
 .messages,
-.messages-log {
-    --default: #222;
+.log {
+    --default: #191919;
     --info: rgb(41, 93, 153);
-    --success: rgb(41, 153, 41);
-    --warning: rgb(153, 42, 41);
+    --info: hsl(203, 31%, 32%);
+    --success: hsl(120, 26%, 22%);
+    --warning: hsl(0, 26%, 22%);
 }
 
 
@@ -25,7 +26,7 @@
 
 .messages {
     position: fixed;
-    inset: auto 1rem 1rem auto;
+    inset: auto 20px 20px auto;
 
     color: hsl(0, 0%, 4%);
     border-radius: 0.2rem;
@@ -33,18 +34,28 @@
     font-size: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
+    gap: 5px;
+    pointer-events: none;
+
 
     .message {
         height: 0;
         overflow: hidden;
-        transition: all 0.5s ease-in-out;
-        width: fit-content;
+        transition: height 0.5s ease-in-out, opacity 0.15s ease;
+        width: 25ch;
         margin-left: auto;
+        pointer-events: auto;
+
+
+
+
+
+        
+        display: none;
 
         &.show {
             height: auto;
-            transition: all 0.15s ease-out;
+            transition: height 0.15s ease-out, opacity 0.15s ease;
         }
 
         .content {
@@ -53,6 +64,8 @@
             padding: 1.5rem;
             border: 2px rgb(48, 48, 48) solid;
             border-radius: 1rem;
+            transition: opacity 0.5s ease 1s;
+
 
             &.default {
                 background: var(--default);
@@ -70,84 +83,58 @@
                 background: var(--warning);
             }
         }
+
+
+        &:hover {
+            opacity: 0.25;
+        }
     }
 }
 
-.messages-log {
-    position: fixed;
 
-    .toggle {
-        position: fixed;
-        inset: auto auto 0.25rem 0.25rem;
-        z-index: 1000;
-        border-radius: 0.25rem;
+.log {
+    margin-inline: auto;
+    transition: all 0.15s ease;
+    /* background: #222; */
 
-        .message-toggle-icon {
-            font-size: 8rem;
-        }
+    width: fit-content;
+    width: 400px;
+    /* max-width: 400px; */
 
-        &:hover {
-            cursor: pointer;
-            background: #333;
-        }
+    min-height: 200px;
+    height: 100%;
+
+    padding: 0 0 0.5rem !important;
+
+    h2 {
+        /* background: rgb(38, 38, 38); */
+        position: sticky;
+        top: 0;
+        display: grid;
+        grid-template-columns: auto auto;
+        place-content: center;
+        padding: 0.2rem 0.6rem;
     }
 
-    .log {
-        position: fixed;
-        inset: 20px 0;
-        z-index: 2000;
-        margin-inline: auto;
-        opacity: 0;
-        transition: all 0.15s ease;
-        /* background: #333333c8; */
-        /* max-height: calc(100vh - 40px); */
+    .log-items {
         overflow-y: auto;
-        pointer-events: none;
-        padding: 6px 20px 20px;
-        /* padding: 0.5rem; */
-        background: #222;
-        pointer-events: none;
-        width: fit-content;
-        min-width: min(300px, 100%);
-        max-height: 500px;
-        box-shadow: inset 0 0 1px 5px rgba(104, 104, 104, 0.814),
-            0 6px 250px 6px rgba(20, 20, 20, 0.738);
-        border-radius: 0.125rem;
-        font-family: monospace;
 
-        h2 {
-            text-align: center;
-            padding: 0.75rem 0;
-        }
+        /* INDIVIDUAL MESSAGE */
+        >* {
+            padding: 0.4rem;
+            max-width: 400px;
+            margin: 1px auto;
+            text-align: start;
 
-        .log-items {
-            /* INDIVIDUAL MESSAGE */
-            >* {
-                padding: 0.25rem;
-                padding: 0.4rem;
-                /* border: 2px rgb(48, 48, 48) solid; */
-                max-width: 600px;
-                margin: 1px auto;
-                /* background: red; */
-
-                &.start {
-                    background: red;
-                    text-align: center;
-                    font-family: monospace;
-                }
+            &.start {
+                background: #151515;
+                text-align: center;
+                font-family: monospace;
             }
         }
-
-        .default {
-            background: #151515;
-        }
     }
 
-    &:has(.toggle.open) {
-        .log {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+    .default {
+        background: #191919;
     }
 }

@@ -1,6 +1,12 @@
 ----------------------- TO DO -----------------------
 
-Populate graph (mutation history)
+Spawn food for sale at the market
+Clearly show price increase/decrease of inventory fish since purchase
+Rename .tables to .area
+
+Calculate fish value based on weight
+Fatten up fish to increase weight/value
+
 
 Add fish def commonality
     snapper     100
@@ -10,15 +16,6 @@ Add fish def commonality
     blowfish    35
     starfish    10
 
-Weight
-    fish spawn in market at same weight for type
-    user can feed fish to increase sell price
-Fish price formula:
-basePrice + price per kg 
-
-
-Calculate fish value based on weight
-Fatten up fish to increase weight/value
 Track inventory fish value over time
 show fish price range
 show fish weight range

@@ -6,8 +6,9 @@ export class Document {
     static elements = {
         balanceE: document.getElementById('balance'),
         playerValueE: document.getElementById('player-value'),
-        
+
         dayCounterE: document.getElementById('day-counter'),
+        nextDayButtonE: document.getElementById('next-day-button'),
         nextDayE: document.getElementById('next-day'),
         messagesE: document.getElementById('messages'),
 
@@ -22,9 +23,8 @@ export class Document {
     }
 
     static initHandlers() {
-        this.elements.nextDayE.addEventListener('click', () => this.clickNextDay());
+        this.elements.nextDayButtonE.addEventListener('click', () => this.clickNextDay());
         this.elements.graphE.addEventListener('click', () => this.clickCanvas());
-        this.elements.messagesLogToggleE.addEventListener('click', () => this.clickLogToggle());
 
         document.getElementById('market-table')
             .addEventListener('click', (e) => {
@@ -35,9 +35,9 @@ export class Document {
 
         document.getElementById('inventory-table')
             .addEventListener('click', (e) => {
-                if (e.target.classList.contains('sell-button')) {
-                    Game.sell(e);
-                }
+                if (e.target.classList.contains('sell-button')) Game.sell(e);
+                if (e.target.classList.contains('feed-button')) Game.feedFish(e);
+
             });
 
         document.getElementById('stats-table')
@@ -62,9 +62,11 @@ export class Document {
     }
 
     static clickNextDay() {
+        this.nextDayMessage();
         Game.handleNextDay();
         this.elements.dayCounterE.innerText = `Day ${Game.dayCount}`
-        this.elements.nextDayE.innerText = `Next Day $${Game.getNextDayPrice()}`
+        
+        this.elements.nextDayE.innerText = `$${Game.getNextDayPrice()}`
         this.elements.balanceE.innerText = `$${Game.balance.toFixed(2)}`
 
         this.updateStats();
@@ -73,32 +75,25 @@ export class Document {
         this.updateMarket();
         this.updatePlayerValue();
 
-
         resizeCanvas();
         Graph.draw();
+    }
+
+    static nextDayMessage() {
+        const nextDayPrice = Game.getNextDayPrice();
 
         // this.message(`Inventory: ${Game.inventory.length}`);
         // this.message(`Balance: $${Game.balance.toFixed(2)}`);
         // this.message(`New Day: ${Game.dayCount}`);
 
-        // this.message(`🛏 ${Game.dayCount} \n $${Game.balance.toFixed(2)}`);
+        const nextDayPriceMsg = nextDayPrice > 0 ? `-$${nextDayPrice.toFixed(2)}` : '';
+        this.message(`🛏 ${Game.dayCount+1} ${nextDayPriceMsg} \n $${Game.balance.toFixed(2)}`);
     }
 
     static clickCanvas() {
         this.elements.graphE.classList.toggle('open');
         resizeCanvas();
         Graph.draw();
-    }
-
-    static clickLogToggle() {
-        this.elements.messagesLogToggleE.classList.toggle('open');
-        console.log('clcky logE');
-    }
-
-    static log() {
-        this.message('---- Document Log ----');
-        this.message(`BalanceE: ${this.elements.balanceE.innerText}`);
-        this.message(`DayCounterE: ${this.elements.dayCounterE.innerText}`);
     }
 
     static message(msg, type = 'default') {
@@ -142,26 +137,23 @@ export class Document {
 
     static updatePlayerValue() {
         const el = this.elements.playerValueE;
-        el.innerText = 'yo';
-        console.log(el);
-        
-        //calc player value 
+        el.innerText = `$${this.getPlayerValue().toFixed(2)}`
+    }
+
+    static getPlayerValue() {
         let inventoryValue = 0;
 
         for (let f of Game.inventory) {
-            console.log(f.price);
             inventoryValue += f.price;
         }
-        
-        
-        const playerValue = (Game.balance + inventoryValue).toFixed(2);
-        el.innerText = `$${playerValue}`
+
+        return Game.balance + inventoryValue;
     }
 
     static updateInventory() {
         const tableE = document.getElementById('inventory-table');
 
-        const header = `<div class="row"><div>Type</div><div>Weight</div><div>Price</div><div> </div></div>`;
+        const header = `<div class="row"><div> </div><div>Weight</div><div>Price</div><div> </div><div> </div><div> </div></div>`;
         let rows = "";
 
         Game.inventory.sort((b, a) => a.price - b.price);
@@ -173,13 +165,17 @@ export class Document {
             return
         }
 
+        
         for (let f of Game.inventory) {
+            const eaten = f.eatenToday ? 'eaten-today' : '';
             rows += `
             <div class="row">
                 <div>${f.name} ${f.img}</div>
                 <div>${f.weight.toFixed(0)}</div>
                 <div>${f.price.toFixed(2)}</div>
-                <div class="sell-button" data-type="${f.type}" data-id="${f.id}">Sell</div>
+                <div class="pet-button" data-type="${f.type}" data-id="${f.id}">Pet</div>
+                <div class="feed-button ${eaten}" data-type="${f.type}" data-id="${f.id}">Feed</div>
+                <div class="sell-button " data-id="${f.id}">Sell</div>
             </div>
         `;
         }
@@ -208,7 +204,7 @@ export class Document {
     }
     static updateMarket() {
         const tableE = document.getElementById('market-table');
-        const header = `<div class="row"><div>Type</div><div>Weight</div><div>Price</div><div> </div></div>`;
+        const header = `<div class="row"><div> </div><div>Weight</div><div>Price</div><div> </div></div>`;
         let rows = "";
 
         if (Game.market.length === 0) {
@@ -243,30 +239,39 @@ export class Document {
             const rowClass = fish.drawToGraph ? '' : 'hide';
 
             let mutationClass = '';
-            if (Math.abs(mutation) > 0.2) {
-                mutationClass = (mutation > 0) ? 'pos' : (mutation < 0) ? 'neg' : '';
-                mutationClass += (Math.abs(mutation) > 1) ? ' double' : '';
-            }
+            mutationClass = (mutation > 0) ? 'pos' : (mutation < 0) ? 'neg' : '';
+            mutationClass += (Math.abs(mutation) > 1) ? ' double' : '';
 
-            let chartHeight = (
-                (fish.price - fish.priceMin) /
-                (fish.priceMax - fish.priceMin)
-            ) * 100;
-            chartHeight = chartHeight.toFixed(2);
+            let mutationPreface = mutation >= 0 ? '+' : '';
 
             rows += `
             <div class="row ${rowClass}" data-type="${fish.type}">
                 <div class="body">
                     <div class="type">${fish.type}</div>
                     <img src="${fish.imgSrc}" ></img>
+                    <div class="price-wrapper">
                     <div class="stat-price">${fish.price.toFixed(2)}</div>
-                    <div class="mutation ${mutationClass}" >${Math.abs(mutation).toFixed(2)}</div>
+                    <div class="mutation ${mutationClass}" >${mutationPreface}${mutation.toFixed(2)}</div>
+                    </div>
                 </div>
-                <div class="chart" style="height:${chartHeight}%"></div>
+                <div class="chart" id="fishStatChart${i}"></div>
             </div>
         `;
         }
-
         tableE.innerHTML = rows;
+
+        // set CSS var: fish stat chart height
+        for (let i = 0; i < fishes.length; i++) {
+            const el = document.getElementById(`fishStatChart${i}`)
+
+
+            const fish = fishes[i];
+            let chartHeight = (
+                (fish.price - fish.priceMin) /
+                (fish.priceMax - fish.priceMin)
+            ) * 100;
+            chartHeight = chartHeight.toFixed(2);
+            el.style.setProperty("--height", `${chartHeight}%`)
+        }
     }
 }

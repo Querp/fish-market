@@ -1,19 +1,22 @@
 import { Document } from './document.js';
 import { Game } from './game.js';
 import { Graph } from './graph.js';
+import { Tank } from './tank.js';
 
 // A static list of fishes and their definitions
 export class Fish {
     static fishes = {};
     static spawnCounter = 0;
 
-    constructor(type, img, priceMin, priceMax, priceVectorMax, priceVectorAccMax, color) {
+    constructor(type, img, priceMin, priceMax, priceVectorMax, priceVectorAccMax, color, baseWeight, maxWeight, commonality, moveSpeed) {
         this.type = type;
         this.img = img;
         this.imgSrc = `img/fish/${type.toLowerCase()}.webp`;
         this.priceMin = priceMin;
         this.priceMax = priceMax;
-        this.price = parseFloat((priceMin + (priceMax - priceMin) * Math.random()).toFixed(2)); // let
+        this.price = (priceMin + (priceMax - priceMin) * Math.random()); // let
+        // this.gramPrice = this.price / ;
+        this.commonality = commonality;
 
         this.priceVector = 0; // let        // describes how fast the price is going up/down each day    
         this.priceVectorMax = priceVectorMax;            // How much can this fish' value rise/drop per day
@@ -22,26 +25,31 @@ export class Fish {
         this.priceVolitility = priceVectorAccMax / this.priceVectorMax;
 
         this.color = color;
+        this.baseWeight = baseWeight;
+        this.maxWeight = maxWeight;
+
+        this.foodEated = 0;
+        this.eatenToday = false;
 
         this.drawToGraph = true;
-
+        this.moveSpeed = moveSpeed;
 
         Fish.fishes[this.type] = this;
     }
 
     static init() {
-        new Fish('Abelone', '🐠', 5, 35, 5, 0.4, '#ff6f00ff');
-        new Fish('Blowfish', '🐡', 25, 65, 6, 0.8, '#8b3f0dff');
-        new Fish('Bluefin', '🐟', 0.3, 12, 4, 2.1, '#009dffff');
-        new Fish('Starfish', '⭐', 38, 75, 7, 2.4, '#fcffe4ff');
-        new Fish('Snapper', '🦈', 7, 35, 1, 1000, '#5d675dff');
-        new Fish('Sunfish', '🌞', 45, 55, 8, 0.15, '#ffaa00ff');
+        new Fish('Abelone', '🐠', 5, 35, 5, 0.4, '#ff6f00ff', 60, 700, 45, 0.4);
+        new Fish('Blowfish', '🐡', 25, 65, 6, 0.8, '#8b3f0dff', 45, 1200, 35, 1.1);
+        new Fish('Bluefin', '🐟', 0.3, 12, 4, 2.1, '#009dffff', 25, 300, 70, 1.3);
+        new Fish('Starfish', '⭐', 38, 75, 7, 2.4, '#fcffe4ff', 200, 250, 10, 0.35);
+        new Fish('Snapper', '🦈', 7, 35, 1, 1000, '#5d675dff', 100, 1350, 100, 1.45);
+        new Fish('Sunfish', '🌞', 45, 55, 8, 0.15, '#ffaa00ff', 200, 5000, 90, 0.65);
 
         // this.log();
     }
 
     spawnNew() {
-        const weight = Math.random() * 500 + 10
+        const gramPrice = +this.price / this.baseWeight;
         return {
             id: Fish.spawnCounter++,
             type: this.type,
@@ -49,8 +57,9 @@ export class Fish {
             color: this.color,
 
             // unique stats
-            weight: weight,
-            price: this.price + (weight / 100),
+            weight: this.baseWeight,
+            // price: this.price + (weight / 100),
+            price: this.price,
             name: getRandomFishName(),
 
             // price dynamics
@@ -60,7 +69,27 @@ export class Fish {
             priceVectorMax: this.priceVectorMax,
             priceVectorAccMax: this.priceVectorAccMax,
             priceVolitility: this.priceVolitility,
+            baseWeight: this.baseWeight,
+            maxWeight: this.maxWeight,
+            gramPrice: gramPrice,
+            commonality: this.commonality,
+            foodEated: this.foodEated,
+
+            // tank
+            // pos: Fish.getRandomFishPos(),
+            // pos: Fish.getRandomFishPos(),
+            pos: {x:50, y:0},
+            vel: {x:0, y:0},
+            moveSpeed: this.moveSpeed,
         };
+    }
+
+
+    static getRandomFishPos(){
+        const x = Math.floor(Math.random() * 100);
+        const y = Math.floor(Math.random() * 100);
+        return {x:x, y:y}
+
     }
 
     static log() {
@@ -72,21 +101,6 @@ export class Fish {
         }
     }
 
-    static update() {
-        const e = document.getElementById('inventory-table');
-        const fishes = Game.inventory;
-        for (let i = 0; i < fishes.length; i++) {
-            const f = fishes[i];
-            // e.innerHTML += f.type;
-            // FISH NEEDS TO BE UNIQUE, NOT OBJECT REFERENCE
-        }
-    }
-
-    static toggleFish(f) {
-        console.log(f.type);
-        // resizeCanvas();
-        // Graph.draw();
-    }
 }
 
 
