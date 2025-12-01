@@ -182,45 +182,44 @@ body:has(.graph.open)>* {
                     text-align: end;
                 }
 
-                &:has(.pos)+.chart::after {
+                /* &:has(.pos)+.chart::after {
                     background: hsl(129, 40%, 50%);
                 }
-
                 &:has(.pos.double)+.chart::after {
                     background: lime;
                 }
-
                 &:has(.neg)+.chart::after {
                     background: hsl(0, 40%, 50%);
                 }
-
                 &:has(.neg.double)+.chart::after {
                     background: red;
-                }
+                } */
             }
 
             .chart {
                 /* height is set with Js */
 
                 /* height: var(--height); */
-                height: calc(100% - 16px);
-                background: #333 !important;
+                height: calc(100% - 20px);
+                background: #252525 !important;
 
-                width: 13px;
+                width: 12px;
                 padding: 0;
                 position: absolute;
-                inset: 10px auto 10px 4px;
+                inset: 12px auto 12px 4px;
                 /* box-shadow: 0 0 20px 1px hsla(0, 0%, 87%, 0.07); */
                 display: flex;
                 flex-flow: column;
                 align-items: center;
+                box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.476);
 
                 &::after {
                     content: '';
                     height: var(--height);
                     display: block;
-                    width: 9px;
+                    width: 10px;
                     margin: auto auto 0;
+                    background: #d4d4d4;
                 }
             }
 
@@ -234,6 +233,7 @@ body:has(.graph.open)>* {
                     box-shadow: none;
                 }
             }
+            background: linear-gradient(135deg, rgb(75, 75, 75), rgb(71, 71, 71));
         }
 
 
