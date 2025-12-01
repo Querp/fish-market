@@ -27,17 +27,19 @@ export class Document {
         this.elements.graphE.addEventListener('click', () => this.clickCanvas());
 
         document.getElementById('market-table')
-            .addEventListener('click', (e) => {
+            .addEventListener('pointerdown', (e) => {
                 if (e.target.classList.contains('buy-button')) {
                     Game.buy(e);
                 }
             });
 
+        
+        
+
         document.getElementById('inventory-table')
             .addEventListener('click', (e) => {
                 if (e.target.classList.contains('sell-button')) Game.sell(e);
                 if (e.target.classList.contains('feed-button')) Game.feedFish(e);
-
             });
 
         document.getElementById('stats-table')
@@ -49,10 +51,8 @@ export class Document {
                 const fishType = row.dataset.type
                 const f = Fish.fishes[fishType];
 
-                // flip bool
                 f.drawToGraph = !f.drawToGraph;
 
-                // redraw graph
                 Graph.draw()
             });
     }
@@ -65,7 +65,7 @@ export class Document {
         this.nextDayMessage();
         Game.handleNextDay();
         this.elements.dayCounterE.innerText = `Day ${Game.dayCount}`
-        
+
         this.elements.nextDayE.innerText = `$${Game.getNextDayPrice()}`
         this.elements.balanceE.innerText = `$${Game.balance.toFixed(2)}`
 
@@ -87,7 +87,7 @@ export class Document {
         // this.message(`New Day: ${Game.dayCount}`);
 
         const nextDayPriceMsg = nextDayPrice > 0 ? `-$${nextDayPrice.toFixed(2)}` : '';
-        this.message(`🛏 ${Game.dayCount+1} ${nextDayPriceMsg} \n $${Game.balance.toFixed(2)}`);
+        this.message(`🛏 ${Game.dayCount + 1} ${nextDayPriceMsg} \n $${Game.balance.toFixed(2)}`);
     }
 
     static clickCanvas() {
@@ -165,7 +165,7 @@ export class Document {
             return
         }
 
-        
+
         for (let f of Game.inventory) {
             const eaten = f.eatenToday ? 'eaten-today' : '';
             rows += `

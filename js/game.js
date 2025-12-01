@@ -1,6 +1,7 @@
 import { Document } from './document.js';
 import { Fish } from './fish.js';
 import { Tank } from './tank.js';
+import { Sound } from './sound.js';
 
 export class Game {
     static dayCount = 0;
@@ -43,6 +44,8 @@ export class Game {
         if (fish.price > this.balance) {
             const diff = Math.abs(this.balance - fish.price).toFixed(2);
             Document.message(`You are $${diff} short`, 'warning')
+            new Sound('warning');
+            
             return
         }
 
@@ -61,8 +64,8 @@ export class Game {
             console.log(this.market);
         }
         Document.updateMarket();
-
         Tank.addFish(fish)
+        new Sound('buy');
     }
 
     static sell(e) {
@@ -78,6 +81,7 @@ export class Game {
 
         const msg = `Selling ${fish.type} "${fish.name}" ${fish.img} at $${fish.price.toFixed(2)}`;
         Document.message(msg, "info");
+        new Sound('sell');
     }
 
     static log() {
@@ -94,6 +98,7 @@ export class Game {
         this.updateNextDayPrice();
         this.mutateStockPrices();
         this.resetInventoryEatenToday();
+        if (this.dayCount !== 1) new Sound('next-day');
     }
 
     static mutateStockPrices() {
@@ -192,6 +197,7 @@ export class Game {
         Document.message(`Feeding "${fish.name}" 1 gram of food. \nPrice + $${fish.gramPrice.toFixed(2)}.`);
         Document.updateInventory();
         Document.updatePlayerValue();
+        new Sound('feed');
     }
 
     static resetInventoryEatenToday() {

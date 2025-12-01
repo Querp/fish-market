@@ -1,26 +1,71 @@
 import { Game } from './game.js';
 import { Fish } from './fish.js';
 
+// add slider to change the amount of days visible (Graph.cols)
+
 export class Graph {
     static canvas = document.getElementById('graph');
     static ctx = this.canvas.getContext("2d");
-    static fishToDraw = {};
+    static cols = 4; // days
 
     static draw() {
-        const cols = 55;    // days
         const rows = 77;   // price
         const border = 10;
-        const history = getFishHistories(cols);
+        const history = getFishHistories(this.cols);
         // console.log(history);
 
         const historyKeys = Object.keys(history);
 
-
-        const w = this.canvas.clientWidth - border * 2;
-        const h = this.canvas.clientHeight - border * 2;
-
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Draw Grid
+        const w = this.canvas.width - border * 2;
+        const h = this.canvas.height - border * 2;
+
+        const rowHeight = (h / rows) * 0.5;
+
+        this.ctx.strokeStyle = 'hsla(0, 0%, 100%, 0.08)';
+        this.ctx.lineWidth = 5;
+        this.ctx.font = '14px system-ui';
+        this.ctx.fillStyle = '#888';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+
+        for (let i = rows * 2; i >= 0; i--) {
+            // const y = i * rowHeight;
+            const y = border + h - i * rowHeight;
+            //grid line 
+
+            if (i % 20 === 0) {
+                this.ctx.lineWidth = 2;
+                this.ctx.font = '28px system-ui';
+            } else if (i % 10 === 0) {
+                this.ctx.font = '16px system-ui';
+            } else {
+                this.ctx.lineWidth = 1;
+                this.ctx.font = '8px system-ui';
+            }
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(w, y);
+            this.ctx.closePath();
+
+
+            // if (i % 1 !== 0) continue;
+            if ((i / 2) % 2.5 !== 0) continue;
+
+
+
+            // grid marking
+            const rowTxt = i * 0.5;
+            this.ctx.fillStyle = '#cdcdcdff';
+            this.ctx.fillText(rowTxt, w / 2, y);
+
+            this.ctx.stroke();
+        }
+
+        // Draw Fish
         for (let i = 0; i < historyKeys.length; i++) {
             const fishType = historyKeys[i];
             const fishPrices = history[historyKeys[i]];
@@ -28,16 +73,13 @@ export class Graph {
             const maxPrice = rows;
             const draw = Fish.fishes[fishType].drawToGraph;
 
-            
+            if (!draw) continue
 
             // --- DRAW LINE ---
             this.ctx.beginPath();
             this.ctx.strokeStyle = clr;
-            this.ctx.lineWidth = 12;
-            if(!draw) {
-                this.ctx.lineWidth = 1;
-                // this.ctx.strokeStyle = 'hsla(0, 0%, 95%, 0.25)';
-            };
+            this.ctx.lineWidth = 2;
+
 
             for (let j = 0; j < fishPrices.length; j++) {
                 const price = fishPrices[j];
@@ -72,7 +114,7 @@ export class Graph {
                     continue
                 }
 
-                // this.ctx.arc(x, y, 2, 0, Math.PI * 2);
+                this.ctx.arc(x, y, 1, 0, Math.PI * 2);
                 this.ctx.fillStyle = clr;
                 this.ctx.fill();
                 this.ctx.strokeStyle = clr;

@@ -97,8 +97,8 @@
     transition: all 0.15s ease;
     /* background: #222; */
 
-    width: fit-content;
-    width: 400px;
+    width: 100%;
+    /* width: 400px; */
     /* max-width: 400px; */
 
     min-height: 200px;
@@ -118,12 +118,15 @@
 
     .log-items {
         overflow-y: auto;
+        width: 500px;
+        margin-inline: auto;
+        font-size: 1.15rem;
+
 
         /* INDIVIDUAL MESSAGE */
         >* {
             padding: 0.4rem;
-            max-width: 400px;
-            margin: 1px auto;
+            margin: 2px auto;
             text-align: start;
 
             &.start {

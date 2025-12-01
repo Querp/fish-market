@@ -1,8 +1,8 @@
 :root {
     --section-width: 800px;
 
-    --main-template-rows: auto 250px 250px 1fr;
-    --main-template-columns: 3fr 4fr 3fr;
+    --main-template-rows: auto 3fr 2fr;
+    --main-template-columns: auto 3fr 2fr 3fr;
     --dashboard-template-columns: auto 1fr 1fr;
     --stats-template-columns: repeat(4, 1fr);
     --market-template-columns: 1fr 70px 70px 80px;
@@ -54,18 +54,18 @@ main {
     gap: 0.25rem;
     display: flex;
     flex-direction: column;
-    max-height: 100svh;
+    
     padding: 0px;
 
     @media(width > 1000px) {
+        max-height: 100svh;
         display: grid;
         grid-template-columns: var(--main-template-columns);
         grid-template-rows: var(--main-template-rows);
         grid-template-areas:
-            "dashboard dashboard dashboard"
-            "market stats inventory"
-            "market graph inventory"
-            "market log tank"
+            "dashboard  dashboard   dashboard   dashboard"
+            "stats      market      graph       inventory"
+            "stats      log         graph       tank"
     }
 
     @media(width > 1300px) {
