@@ -14,7 +14,7 @@ export class Game {
 
     static init() {
         this.dayCount = 0;
-        this.balance = 50;
+        this.balance = 500;
         this.inventory = [];
         this.food = 0;
         this.market = [];
