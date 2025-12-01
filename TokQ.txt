@@ -1,6 +1,0 @@
-Numbering CSS files
-    I did it so they are sorted in my IDE.
-    Good/bad approach?
-
-ISSUES
-#1: Align fish stat numbers & replace '$' with coin icon.
